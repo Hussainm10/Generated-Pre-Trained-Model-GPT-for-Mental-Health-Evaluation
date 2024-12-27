@@ -1,5 +1,3 @@
-# %%writefile app.py
-
 import streamlit as st
 from huggingface_hub import InferenceClient
 
