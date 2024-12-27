@@ -1,12 +1,10 @@
-#Following is the main code.
-
-#%%writefile app.py
+# %%writefile app.py
 
 import streamlit as st
 from huggingface_hub import InferenceClient
 
-# Your Hugging Face API key (replace this with your actual key)
-api_key = "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"  # Replace with your API key
+# Access Hugging Face API key from Streamlit secrets
+api_key = st.secrets["huggingface"]["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"]  # Fetch the API key from Streamlit secrets
 
 # Initialize the Inference Client with the API key
 client = InferenceClient(token=api_key)
