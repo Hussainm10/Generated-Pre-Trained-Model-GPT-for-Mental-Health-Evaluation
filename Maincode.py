@@ -1,3 +1,7 @@
+streamlit
+huggingface_hub==0.15.0
+sentencepiece
+
 # %%writefile app.py
 
 import streamlit as st
