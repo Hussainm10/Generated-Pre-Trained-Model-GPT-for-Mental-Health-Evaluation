@@ -1,5 +1,5 @@
 streamlit
-huggingface_hub==0.15.0
+huggingface_hub
 sentencepiece
 
 # %%writefile app.py
