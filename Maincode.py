@@ -1,7 +1,3 @@
-streamlit
-huggingface_hub
-sentencepiece
-
 # %%writefile app.py
 
 import streamlit as st
