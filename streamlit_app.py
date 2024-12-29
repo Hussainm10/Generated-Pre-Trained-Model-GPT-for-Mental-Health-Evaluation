@@ -93,12 +93,13 @@ if user_query:
         if response.status_code == 200:
             result = response.json()
 
-            # Handle responses and ensure all models return 'generated_text'
-            if selected_model in ['distilgpt2 🧩', 'bart 📖']:
-                # For distilgpt2 and bart, we assume the result comes as a list and simulate a dict with 'generated_text'
+            # Handle responses correctly based on model's output type
+            if isinstance(result, list):  # For distilgpt2 and bart, result is a list
                 model_reply = result[0].get("generated_text", "No response generated.")
-            else:  # For gpt-neo and flan-t5, we assume a dictionary structure
+            elif isinstance(result, dict):  # For flan-t5 and gpt-neo, result is a dictionary
                 model_reply = result.get("generated_text", "No response generated.")
+            else:
+                model_reply = "Invalid response format."
 
             # Display the response
             st.markdown(f"### *{selected_model} Response:* 🧑‍⚕️✨", unsafe_allow_html=True)
