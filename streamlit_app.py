@@ -93,10 +93,10 @@ if user_query:
         if response.status_code == 200:
             result = response.json()
 
-            # Check if the response is a list and extract content correctly
-            if isinstance(result, list):
+            # Handle responses differently depending on model output
+            if isinstance(result, list):  # If the result is a list (e.g., distilgpt2, bart)
                 model_reply = result[0].get("generated_text", "No response generated.")
-            else:
+            else:  # If the result is a dictionary (e.g., flan-t5, gpt-neo)
                 model_reply = result.get("generated_text", "No response generated.")
 
             # Display the response
