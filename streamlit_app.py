@@ -69,12 +69,12 @@ user_query = st.text_input('Type your question here 💬:')
 
 # Map models to Hugging Face API IDs (keep original mapping)
 model_mapping = {
-    'distilgpt2 🧩': "distil-gpt2",
-    'bart 📖': "facebook/bart-large-cnn",
-    'flan-t5 🌟': "google/flan-t5-large",
-    'gpt-neo 💡': 'EleutherAI/gpt-neo-2.7B'
+    'distilgpt2 🧩': "meta-llama/Llama-3.2-1B-Instruct",  # Replace with actual model IDs
+    'bart 📖': "google/gemma-1.1-2b-it",                # Replace with actual model IDs
+    'flan-t5 🌟': "tiiuae/falcon-7b-instruct",          # Replace with actual model IDs
+    'gpt-neo 💡': 'google/gemma-1.1-2b-it'              # Replace with actual model IDs
 }
-selected_model_id = model_mapping.get(selected_model, "distil-gpt2")
+selected_model_id = model_mapping.get(selected_model, "meta-llama/Llama-3.2-1B-Instruct")
 
 # Handle user input and generate a response
 if user_query:
@@ -93,11 +93,13 @@ if user_query:
         if response.status_code == 200:
             result = response.json()
 
-            # Ensure response format is consistent across models
-            if isinstance(result, list):  # If the result is a list (BART, DistilGPT2)
+            # Handle responses and ensure consistency
+            if isinstance(result, list):  # If the result is a list (e.g., distilgpt2, bart)
                 model_reply = result[0].get("generated_text", "No response generated.")
-            else:  # If the result is a dictionary (FLAN, GPT-Neo)
+            elif isinstance(result, dict):  # If the result is a dictionary (e.g., flan-t5, gpt-neo)
                 model_reply = result.get("generated_text", "No response generated.")
+            else:
+                model_reply = "Unexpected response format."
 
             # Display the response
             st.markdown(f"### *{selected_model} Response:* 🧑‍⚕️✨", unsafe_allow_html=True)
