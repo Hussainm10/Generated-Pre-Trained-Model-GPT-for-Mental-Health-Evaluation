@@ -1,4 +1,3 @@
-
 import streamlit as st
 import requests
 
@@ -70,10 +69,10 @@ user_query = st.text_input('Type your question here 💬:')
 
 # Map models to Hugging Face API IDs
 model_mapping = {
-    'distilgpt2 🧩': "distil-gpt2",
-    'bart 📖': "facebook/bart-large-cnn",
-    'flan-t5 🌟': "google/flan-t5-xl",
-    'gpt-neo 💡': "EleutherAI/gpt-neo-2.7B"
+    'distilgpt2 🧩': "distil-gpt2",  # Correct model ID for distil-gpt2
+    'bart 📖': "facebook/bart-large-cnn",  # Correct model ID for BART
+    'flan-t5 🌟': "google/flan-t5-xl",  # Correct model ID for FLAN-T5
+    'gpt-neo 💡': "EleutherAI/gpt-neo-2.7B"  # Correct model ID for GPT-Neo
 }
 selected_model_id = model_mapping.get(selected_model, "distil-gpt2")
 
@@ -94,13 +93,11 @@ if user_query:
         if response.status_code == 200:
             result = response.json()
 
-            # Check if the response is a list and handle accordingly
-            if selected_model in ['distilgpt2 🧩', 'bart 📖']:
-                # For models like DistilGPT2 and BART, the response is usually text directly
-                model_reply = result[0]["generated_text"] if isinstance(result, list) else "Unexpected response structure."
-            else:
-                # For GPT-Neo, FLAN-T5, and others, we handle as usual
+            # Check if the response is a list and extract content correctly
+            if isinstance(result, list):
                 model_reply = result[0].get("generated_text", "No response generated.")
+            else:
+                model_reply = result.get("generated_text", "No response generated.")
 
             st.markdown(f"### *{selected_model} Response:* 🧑‍⚕️✨", unsafe_allow_html=True)
             st.markdown(f"<div class='stMarkdown'>{model_reply}</div>", unsafe_allow_html=True)
