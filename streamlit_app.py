@@ -61,7 +61,6 @@ st.title("🧠 Mental State Evaluation Tool 🌿✨")
 st.caption("Explore your mental well-being with the power of AI. 🌟 Let's begin the journey! 🛤️")
 
 # Map models to Hugging Face API IDs
-
 model_mapping = {
     'distilgpt2 🧩': "meta-llama/Llama-3.2-1B-Instruct",
     'bart 📖': "google/gemma-1.1-2b-it",
@@ -69,8 +68,9 @@ model_mapping = {
     'gpt-neo 💡': 'google/gemma-1.1-2b-it'
 }
 
-selected_model = st.selectbox("Select Model 🔍", list(models.keys()))
-selected_model_id = models[selected_model]
+# Use model_mapping dictionary to display the model names in the selectbox
+selected_model = st.selectbox("Select Model 🔍", list(model_mapping.keys()))
+selected_model_id = model_mapping[selected_model]
 
 # Query input box
 user_query = st.text_input("Type your question here 💬:")
