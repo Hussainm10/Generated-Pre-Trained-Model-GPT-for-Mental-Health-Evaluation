@@ -67,14 +67,14 @@ selected_model = st.selectbox('Select Model 🔍', models)
 # Query input box with emoji prompt
 user_query = st.text_input('Type your question here 💬:')
 
-# Map models to Hugging Face API IDs
+# Map models to Hugging Face API IDs (keep original mapping)
 model_mapping = {
-    'distilgpt2 🧩': "distil-gpt2",  # Correct model ID for distil-gpt2
-    'bart 📖': "facebook/bart-large-cnn",  # Correct model ID for BART
-    'flan-t5 🌟': "google/flan-t5-xl",  # Correct model ID for FLAN-T5
-    'gpt-neo 💡': "EleutherAI/gpt-neo-2.7B"  # Correct model ID for GPT-Neo
+    'distilgpt2 🧩': "meta-llama/Llama-3.2-1B-Instruct",
+    'bart 📖': "google/gemma-1.1-2b-it",
+    'flan-t5 🌟': "tiiuae/falcon-7b-instruct",
+    'gpt-neo 💡': 'google/gemma-1.1-2b-it'
 }
-selected_model_id = model_mapping.get(selected_model, "distil-gpt2")
+selected_model_id = model_mapping.get(selected_model, "meta-llama/Llama-3.2-1B-Instruct")
 
 # Handle user input and generate a response
 if user_query:
@@ -99,6 +99,7 @@ if user_query:
             else:
                 model_reply = result.get("generated_text", "No response generated.")
 
+            # Display the response
             st.markdown(f"### *{selected_model} Response:* 🧑‍⚕️✨", unsafe_allow_html=True)
             st.markdown(f"<div class='stMarkdown'>{model_reply}</div>", unsafe_allow_html=True)
         else:
