@@ -91,7 +91,14 @@ if user_query:
         # Process the response
         if response.status_code == 200:
             result = response.json()
-            generated_text = result.get("generated_text", "No response generated.")
+
+            # Check if the response is a list or dictionary and handle accordingly
+            if isinstance(result, list):
+                generated_text = result[0].get("generated_text", "No response generated.")
+            else:
+                generated_text = result.get("generated_text", "No response generated.")
+            
+            # Display the result
             st.markdown(f"### *{selected_model} Response:* 🧑‍⚕️✨", unsafe_allow_html=True)
             st.markdown(f"<div class='stMarkdown'>{generated_text}</div>", unsafe_allow_html=True)
         else:
