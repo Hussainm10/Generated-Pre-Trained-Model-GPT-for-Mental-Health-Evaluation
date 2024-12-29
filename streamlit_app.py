@@ -14,35 +14,35 @@ headers = {"Authorization": f"Bearer {api_key}"}
 st.markdown("""
     <style>
         body {
-            background-color: #1E1E2F;
-            color: #CFCFCF;
-            font-family: 'Helvetica', sans-serif;
+            background-color: #1E1E2F;  /* Soft dark background */
+            color: #CFCFCF;  /* Light gray text for contrast */
+            font-family: 'Helvetica', sans-serif;  /* Clean, modern font */
         }
         .stTitle {
-            color: #FFD700;
+            color: #FFD700;  /* Golden text for the title */
             font-size: 34px;
             font-weight: bold;
             text-align: center;
         }
         .stCaption {
-            color: #A9A9A9;
+            color: #A9A9A9;  /* Subtle gray for captions */
             font-size: 15px;
             font-style: italic;
             text-align: center;
         }
         .stSelectbox, .stTextInput input {
-            background-color: #2C2C3D;
-            color: #E0E0E0;
-            border: 1px solid #FFD700;
+            background-color: #2C2C3D;  /* Soft dark gray background for inputs */
+            color: #E0E0E0;  /* Light text inside inputs */
+            border: 1px solid #FFD700;  /* Golden border for highlighting */
             border-radius: 10px;
             padding: 10px;
         }
         .stMarkdown {
-            color: #CFCFCF;
+            color: #CFCFCF;  /* Light gray for markdown text */
             font-size: 16px;
         }
         .stButton button {
-            background-color: #4CAF50;
+            background-color: #4CAF50;  /* Soft green for buttons */
             color: white;
             border-radius: 12px;
             padding: 8px 20px;
@@ -51,14 +51,21 @@ st.markdown("""
             cursor: pointer;
         }
         .stButton button:hover {
-            background-color: #45A049;
+            background-color: #45A049;  /* Slightly brighter green on hover */
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Set the title and caption
+# Set the title and caption with additional emojis
 st.title("🧠 Mental State Evaluation Tool 🌿✨")
 st.caption("Explore your mental well-being with the power of AI. 🌟 Let's begin the journey! 🛤️")
+
+# Model selection with emojis
+models = ['distilgpt2 🧩', 'bart 📖', 'gpt-neo 💡', 'flan-t5 🌟']
+selected_model = st.selectbox('Select Model 🔍', models)
+
+# Query input box with emoji prompt
+user_query = st.text_input('Type your question here 💬:')
 
 # Map models to Hugging Face API IDs
 model_mapping = {
@@ -67,13 +74,7 @@ model_mapping = {
     'flan-t5 🌟': "tiiuae/falcon-7b-instruct",
     'gpt-neo 💡': 'google/gemma-1.1-2b-it'
 }
-
-# Use model_mapping dictionary to display the model names in the selectbox
-selected_model = st.selectbox("Select Model 🔍", list(model_mapping.keys()))
-selected_model_id = model_mapping[selected_model]
-
-# Query input box
-user_query = st.text_input("Type your question here 💬:")
+selected_model_id = model_mapping.get(selected_model, "meta-llama/Llama-3.2-1B-Instruct")
 
 # Handle user input and generate a response
 if user_query:
@@ -91,16 +92,9 @@ if user_query:
         # Process the response
         if response.status_code == 200:
             result = response.json()
-
-            # Check if the response is a list or dictionary and handle accordingly
-            if isinstance(result, list):
-                generated_text = result[0].get("generated_text", "No response generated.")
-            else:
-                generated_text = result.get("generated_text", "No response generated.")
-            
-            # Display the result
+            model_reply = result.get("generated_text", "No response generated.")
             st.markdown(f"### *{selected_model} Response:* 🧑‍⚕️✨", unsafe_allow_html=True)
-            st.markdown(f"<div class='stMarkdown'>{generated_text}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='stMarkdown'>{model_reply}</div>", unsafe_allow_html=True)
         else:
             st.error(f"Error: {response.status_code} - {response.text}")
 
